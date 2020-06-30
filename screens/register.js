@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, TextInput, Alert } from 'react-native';
 
-class Login extends Component {
+class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,7 +35,7 @@ class Login extends Component {
                 this.props.navigation.navigate('User', {key:this.state.key})
             })
             .catch(error => {
-                Alert.alert('Invalid username or password')
+                Alert.alert('Invalid register')
             });
     }
 
@@ -46,19 +46,18 @@ class Login extends Component {
                     <Image style={styles.logo} source={require('../assets/logo.png')}/>
                 </View>
                 <View>
+                    <TextInput style={styles.textInput} placeholder="Name" onChangeText={(text)=>this.setState({email:text})}/>
+                    <TextInput style={styles.textInput} placeholder="Lastname" onChangeText={(text)=>this.setState({password:text})}/>
                     <TextInput style={styles.textInput} placeholder="Username" onChangeText={(text)=>this.setState({email:text})}/>
                     <TextInput style={styles.textInput} placeholder="Password" onChangeText={(text)=>this.setState({password:text})}/>
                 </View>
                 <View style={styles.main}>
                 <View style={styles.buttons}>
-                    <TouchableHighlight style={''} onPress={this.onSubmit}>
-                        <Text style={styles.text}>Find your place!</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={''} onPress={() => this.props.navigation.navigate('Register')}>
-                        <Text style={styles.text}>Sign in</Text>
+                <TouchableHighlight style={''} onPress={() => this.props.navigation.navigate('User')}>
+                        <Text style={styles.text}>Register!</Text>
                     </TouchableHighlight>
                     <TouchableHighlight style={''} onPress={() => this.props.navigation.navigate('List')}>
-                        <Text style={styles.text}>Enter as a guest</Text>
+                        <Text style={styles.text}>Enter without sign in</Text>
                     </TouchableHighlight>
                     </View>
                 </View>
@@ -116,6 +115,32 @@ const styles = StyleSheet.create({
         color: 'teal',
         fontWeight: 'bold',
     },
+    buttons: {
+        width: '90%',
+        margin: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+      input: {
+        height: 40,
+        borderColor: 'black',
+        borderRadius: 10,
+        borderWidth: 2,
+        marginBottom: 20
+      },
+    buttons: {
+        width: '90%',
+        margin: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+      input: {
+        height: 40,
+        borderColor: 'black',
+        borderRadius: 10,
+        borderWidth: 2,
+        marginBottom: 20
+      },
     button: {
         marginTop: 10,
         backgroundColor: '#f4511e',
@@ -143,4 +168,4 @@ const styles = StyleSheet.create({
     main: {}
 });
 
-export default Login;
+export default Register;

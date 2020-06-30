@@ -6,6 +6,7 @@ import PropertiesList from './screens/list';
 import CreateProperties from './screens/create';
 import UserList from './screens/user';
 import EditProperties from './screens/edit';
+import Register from './screens/register';
 
 const Stack = createStackNavigator();
 
@@ -14,6 +15,7 @@ const Stack = createStackNavigator();
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Login" component={Login}/>
+          <Stack.Screen name="Register" component={Register}/>
           <Stack.Screen name="List" component={PropertiesList}/>
           <Stack.Screen name="Create" component={CreateProperties}/>
           <Stack.Screen name="User" component={UserList}/>
