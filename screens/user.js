@@ -1,104 +1,105 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Image } from 'react-native';
-import { TouchableHighlight, FlatList } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, Image, Alert } from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 
 
 class UserList extends Component {
     constructor(props) {
         super(props);
-        this.state = { list: [
-            {
-                title: 'Propiedad uno',
-                type: 'Tipo uno',
-                address: 'Dirección uno',
-                rooms: 2,
-                price: 8000000,
-                area: 400
-            },
-            {
-                title: 'Propiedad dos',
-                type: 'Tipo dos',
-                address: 'Dirección dos',
-                rooms: 2,
-                price: 8000000,
-                area: 400
-            }
-        ] }
+        this.state = { list: [] }
     }
 
     componentDidMount = () => {
-        //this.getProperties;
-    } 
-
-    getProperties = () => {
-        fetch('urlDelaApiList')
-        .then(response => response.json())
-        .then(json => {
-            //this.state.list = json.datos;
-        }).catch(error => {
-            alert('There has been a error loading the property list');
-        })
+        this.getProperties()
     }
 
-    
+    getProperties = () => {
+        fetch(`http://localhost:3000/estates/get/all/${this.props.route.params.key}`)
+            .then(response => response.json())
+            .then(json => {
+                this.setState({ list: json.res.data })
+            }).catch(error => {
+                Alert.alert('There has been a error loading the property list');
+            })
+    }
 
-    render() { 
-        return ( <View style={styles.container}>
-            <View style={styles.buttons}>
-            <Text style={styles.text3}>My properties</Text>
+    handleDelete = async (id) => {
+        Alert.alert(
+            'Delete property',
+            `Are you sure you want to delete the property?`,
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                {
+                    text: "YES",
+                    onPress: async () => {
+                        try {
+                            await fetch(`http://localhost:3000/estates/delete/${id}`, { method: 'DELETE' })
+                            this.getProperties()
+                        } catch (error) {
+                            console.error('Error:', error)
+                        }
+                    }
+                }
+            ],
+            { cancelable: false }
+        )
+    }
 
-        </View>
-        <TouchableHighlight style={styles.createListButton} onPress={() => this.props.navigation.navigate('Create')}>
-                <Text style={styles.buttonTextStyle}>Create new</Text>
-        </TouchableHighlight>
-
-            {this.state.list.map((property) => {return (
-                
-            <View>
-                
-
-                <Image
-                    style={styles.logo}
-                    source={require('../assets/host7.jpg')}
-                />
-
-                <View style={styles.box1}>
-                <Text style={styles.text1}>{property.title}</Text>
-                <Text style={styles.text2}>{property.type}</Text>
-                <Text style={styles.text2}>{property.address}</Text>
-                <Text style={styles.text2}>{property.rooms}</Text>
-                <Text style={styles.text2}>{property.price}</Text>
-                <Text style={styles.text2}>{property.area}</Text>
+    render() {
+        return (
+            <View style={styles.container}>
                 <View style={styles.buttons}>
-                <TouchableHighlight ouchableHighlight onPress={() => this.props.navigation.navigate('Edit', { property })}>
-                <Text style={styles.button}>Edit</Text>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={() => this.props.navigation.navigate('Create')}>
-                <Text style={styles.button}>Delete</Text>
-                </TouchableHighlight>
+                    <Text style={styles.text3}>My properties</Text>
                 </View>
-                </View>
-                
+                <TouchableHighlight style={styles.createListButton} onPress={() => this.props.navigation.navigate('Create', {key:this.props.route.params.key})}>
+                        <Text style={styles.buttonTextStyle}>Create new</Text>
+                </TouchableHighlight>
 
+                {
+                    this.state.list.map((property, i) => {
+                        return (
+                            <View key={i}>
+                                <Image
+                                    style={styles.logo}
+                                    source={require(`../assets/host${Math.ceil(Math.random()*7)}.jpg`)}
+                                />
+                                <View style={styles.box1}>
+                                    <Text style={styles.text1}>{property.title}</Text>
+                                    <Text style={styles.text2}>{property.type}</Text>
+                                    <Text style={styles.text2}>{property.address}</Text>
+                                    <Text style={styles.text2}>{property.rooms}</Text>
+                                    <Text style={styles.text2}>{property.price}</Text>
+                                    <Text style={styles.text2}>{property.area}</Text>
+                                    <View style={styles.buttons}>
+                                        <TouchableHighlight onPress={() => this.props.navigation.navigate('Edit', { property, key: this.props.route.params.key })}>
+                                            <Text style={styles.button}>Edit</Text>
+                                        </TouchableHighlight>
+                                        <TouchableHighlight onPress={() => this.handleDelete(property._id)}>
+                                            <Text style={styles.button}>Delete</Text>
+                                        </TouchableHighlight>
+                                    </View>
+                                </View>
+                            </View>
+                        )
+                    })
+                }
             </View>
-
-            
-            )})}
-        </View>
          );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center'
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     buttonTextStyle: {
         color: 'white',
-        //textAlign:'center',
         fontWeight: 'bold'
     },
     logo: {
@@ -117,14 +118,14 @@ const styles = StyleSheet.create({
 
     },
     text1:{
-            backgroundColor: '#bf360c',
-            padding: 5,
-            marginVertical: 8,
-            marginHorizontal: 16,
-            textAlign:'center',
-            color:'white',
-            fontWeight: 'bold',
-            borderRadius: 5
+        backgroundColor: '#bf360c',
+        padding: 5,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        textAlign:'center',
+        color:'white',
+        fontWeight: 'bold',
+        borderRadius: 5
     },
     text2:{
         fontSize: 12,
@@ -134,8 +135,6 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     createListButton: {
-        textAlign: 'center',
-        fontWeight:'bold',
         backgroundColor: '#ff7043',
         marginTop:5,
         marginBottom:10,
@@ -144,9 +143,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         borderRadius: 10,
-        color: '#F5FCFF',
-        textAlign: "center",
-        fontWeight: 'bold',
+        alignItems: "center",
         width: 290,
         shadowColor: "#000",
         shadowOffset: {
@@ -155,7 +152,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-    
         elevation: 6,
     },
     box1:{
@@ -163,27 +159,25 @@ const styles = StyleSheet.create({
         borderWidth: 5,
         borderRadius: 4,
         marginBottom: 5
-
     },
     buttons: {
         width: '90%',
         margin: 10,
         flexDirection: 'row',
         justifyContent: 'space-between'
-        },
-      input: {
+    },
+    input: {
         height: 40,
         borderColor: 'black',
         borderRadius: 10,
         borderWidth: 2,
         marginBottom: 20
-      },
-      title: {
+    },
+    title: {
         fontSize: 32,
-            marginTop: 10
-      },
-    
-      button:{
+        marginTop: 10
+    },
+    button:{
         fontSize: 14,
         marginTop: 6,
         marginBottom: 6,
@@ -199,10 +193,8 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-    
         elevation: 6,
-      
     }
 });
- 
+
 export default UserList;
