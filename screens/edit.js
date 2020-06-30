@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Picker, View, Button, TextInput, Image, Alert } from 'react-native';
+import { StyleSheet, Text, Picker, View, TextInput, Alert } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-
-
-
-
 
 class EditProperties extends Component {
     constructor(props) {
@@ -19,67 +15,58 @@ class EditProperties extends Component {
         }
     }
 
-    createData = async () => {
-        const {title, type, address, rooms, price, area, owner} = this.state
-        if (title && type && address && rooms && price && area && owner) {
-                try {
-                    await fetch(`https://localhost/appgenda-api-slim/api/appointment/add`, {
-                        method: 'POST',
-                        headers: {
+    updateData = async () => {
+        const {title, type, address, rooms, price, area} = this.state
+        if (title && type && address && rooms && price && area) {
+            try {
+                await fetch(`http://localhost:3000/estates/update/${this.props.route.params.property._id}`, {
+                    method: 'PUT',
+                    headers: {
                         'Content-Type': 'application/json'
-                            },
-                        body: JSON.stringify({title, type, address, rooms, price, area, owner}),
-                    })
-                    navigation.navigate('List')
-                } catch (error) {
-                    console.error('Error:', error)
-                }
+                    },
+                    body: JSON.stringify({title, type, address, rooms, price, area}),
+                })
+                this.props.navigation.navigate('User', {key: this.props.route.params.key})
+            } catch (error) {
+                console.error('Error:', error)
+            }
         } else {
           Alert.alert(
             'Data Incomplete',
-            `Please fill all fields to continue. Remember that red fields may cause an error in the future.`
+            `Please fill all fields to continue.`
           )
         }
       }
-      
 
     render() {
-        const {title, type, address, rooms, price, area, owner} = this.state
-        console.log(this.state)
-        return ( 
+        const {title, type, address, rooms, price, area} = this.state
+        return (
             <View style={styles.container}>
                 <Text style={styles.title1}>Enter new property</Text>
                 <TextInput style={styles.textInput} value={this.state.title}
                     onChangeText={text => this.setState({title: text})}
-                    
                 />
-                
-                 <Picker style={styles.textInput22}
-                onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
-                <Picker.Item label="Select type" value="select type" />
-                <Picker.Item label="House" value="house" />
-                <Picker.Item label="Room" value="room" />
-                <Picker.Item label="Hostel" value="hostel" />
-        </Picker>
-    
+                <Picker style={styles.textInput22}
+                onValueChange={(itemValue, itemIndex) => this.setState({type:itemValue})}>
+                    <Picker.Item label="Select type" value="select type" />
+                    <Picker.Item label="House" value="house" />
+                    <Picker.Item label="Room" value="room" />
+                    <Picker.Item label="Hostel" value="hostel" />
+                </Picker>
                 <TextInput style={styles.textInput} value={this.state.address}
                     onChangeText={text => this.setState({address: text})}
-                    
                 />
                 <TextInput style={styles.textInput} value={this.state.rooms.toString()}
                     onChangeText={text => this.setState({rooms: text})}
-                    
                 />
                 <TextInput style={styles.textInput} value={this.state.price.toString()}
                     onChangeText={text => this.setState({price: text})}
-                    
                 />
                 <TextInput style={styles.textInput} value={this.state.area.toString()}
                     onChangeText={text => this.setState({area: text})}
-                    
                 />
 				<View style={styles.buttons}>
-					<TouchableHighlight onPress={this.createData}>
+					<TouchableHighlight onPress={this.updateData}>
 						<Text style={styles.button}>SAVE</Text>
 					</TouchableHighlight>
 					<TouchableHighlight onPress={() => this.props.navigation.navigate('User')}>
@@ -102,14 +89,13 @@ const styles = StyleSheet.create({
         textAlign:'center',
         fontWeight: 'bold'
     },
-
-       textInput: {
-            marginTop: 10,
-            borderColor: '#b0bec5',
-            borderWidth: 2,
-            borderRadius: 5,
-            width: 300,
-            textAlign: "center",
+    textInput: {
+        marginTop: 10,
+        borderColor: '#b0bec5',
+        borderWidth: 2,
+        borderRadius: 5,
+        width: 300,
+        textAlign: "center",
         fontWeight: 'bold',
         width: 300,
         height: 30,
@@ -120,9 +106,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-    
         elevation: 6,
-
     },
     textInput22: {
         marginTop: 10,
@@ -130,19 +114,17 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 5,
         width: 300,
-    width: 300,
-    height: 30,
-    shadowColor: "#000",
-    shadowOffset: {
-        width: 0,
-        height: 4,
+        width: 300,
+        height: 30,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 6,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 6,
-
-},
     logo: {
         width : 250,
         height: 170,
@@ -152,14 +134,14 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     text1:{
-            backgroundColor: '#bf360c',
-            padding: 5,
-            marginVertical: 8,
-            marginHorizontal: 16,
-            textAlign:'center',
-            color:'white',
-            fontWeight: 'bold',
-            borderRadius: 5
+        backgroundColor: '#bf360c',
+        padding: 5,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        textAlign:'center',
+        color:'white',
+        fontWeight: 'bold',
+        borderRadius: 5
     },
     text2:{
         fontSize: 12,
@@ -190,7 +172,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-    
         elevation: 6,
     },
     title1: {
@@ -209,28 +190,25 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-    
         elevation: 6,
-    
-      },
-      buttons: {
+    },
+    buttons: {
         width: '90%',
         margin: 10,
         flexDirection: 'row',
         justifyContent: 'space-between'
-        },
-      input: {
+    },
+    input: {
         height: 40,
         borderColor: 'black',
         borderRadius: 10,
         borderWidth: 2,
         marginBottom: 20
-      },
-      title: {
-        fontSize: 32,
-            marginTop: 10
-      },
-    
+    },
+    title: {
+    fontSize: 32,
+        marginTop: 10
+    },
     button:{
         marginTop: 10,
         fontSize: 12,
@@ -251,8 +229,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-    
-        elevation: 6,
+        elevation: 6
     }
 });
 
