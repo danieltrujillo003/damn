@@ -1,19 +1,27 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Login from './screens/login';
+import PropertiesList from './screens/list';
+import CreateProperties from './screens/create';
+import UserList from './screens/user';
+import EditProperties from './screens/edit';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+const Stack = createStackNavigator();
+
+  function App() {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={Login}/>
+          <Stack.Screen name="List" component={PropertiesList}/>
+          <Stack.Screen name="Create" component={CreateProperties}/>
+          <Stack.Screen name="User" component={UserList}/>
+          <Stack.Screen name="Edit" component={EditProperties}/>
+        </Stack.Navigator>
+    </NavigationContainer>
+   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+export default App;
