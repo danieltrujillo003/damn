@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
 class PropertiesList extends Component {
@@ -42,32 +42,32 @@ class PropertiesList extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <TouchableHighlight style={styles.createListButton} onPress={() => this.props.navigation.navigate('Login')}>
-                    <Text style={styles.buttonTextStyle}>Properties</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={styles.createListButton} onPress={() => this.toggleFilter()}>
-                    <Text style={styles.buttonTextStyle}>Filter</Text>
-                </TouchableHighlight>
-
-                {
-                    this.state.list.map((property, i) => {
-                        return (
-                            <View key={i}>
-                                <Image
-                                    style={styles.logo}
-                                    source={require(`../assets/host${Math.ceil(Math.random()*7)}.jpg`)}
-                                />
-                                <View style={styles.box1}>
-                                    <Text style={styles.text1}>{property.title}</Text>
-                                    <Text style={styles.text2}>{property.price}</Text>
-                                   
+            <ScrollView>
+                <View style={styles.container}>
+                    <TouchableHighlight style={styles.createListButton} onPress={() => this.props.navigation.navigate('Login')}>
+                        <Text style={styles.buttonTextStyle}>Properties</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight style={styles.createListButton} onPress={() => this.toggleFilter()}>
+                        <Text style={styles.buttonTextStyle}>Filter</Text>
+                    </TouchableHighlight>
+                    {
+                        this.state.list.map((property, i) => {
+                            return (
+                                <View key={i}>
+                                    <Image
+                                        style={styles.logo}
+                                        source={require(`../assets/host${Math.ceil(Math.random()*7)}.jpg`)}
+                                    />
+                                    <View style={styles.box1}>
+                                        <Text style={styles.text1}>{property.title}</Text>
+                                        <Text style={styles.text2}>{property.price}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                        )
-                    })
-                }
-            </View>
+                            )
+                        })
+                    }
+                </View>
+            </ScrollView>
         );
     }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, Alert, ScrollView } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
 
@@ -51,43 +51,44 @@ class UserList extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <View style={styles.buttons}>
-                    <Text style={styles.text3}>My properties</Text>
-                </View>
-                <TouchableHighlight style={styles.createListButton} onPress={() => this.props.navigation.navigate('Create', {key:this.props.route.params.key})}>
-                        <Text style={styles.buttonTextStyle}>Create new</Text>
-                </TouchableHighlight>
-
-                {
-                    this.state.list.map((property, i) => {
-                        return (
-                            <View key={i}>
-                                <Image
-                                    style={styles.logo}
-                                    source={require(`../assets/host${Math.ceil(Math.random()*7)}.jpg`)}
-                                />
-                                <View style={styles.box1}>
-                                    <Text style={styles.text1}>{property.title}</Text>
-                                    <Text style={styles.text2}>{property.type}</Text>
-                                    <Text style={styles.text2}>{property.address}</Text>
-                                    <Text style={styles.text2}>{property.rooms}</Text>
-                                    <Text style={styles.text2}>{property.price}</Text>
-                                    <Text style={styles.text2}>{property.area}</Text>
-                                    <View style={styles.buttons}>
-                                        <TouchableHighlight onPress={() => this.props.navigation.navigate('Edit', { property, key: this.props.route.params.key })}>
-                                            <Text style={styles.button}>Edit</Text>
-                                        </TouchableHighlight>
-                                        <TouchableHighlight onPress={() => this.handleDelete(property._id)}>
-                                            <Text style={styles.button}>Delete</Text>
-                                        </TouchableHighlight>
+            <ScrollView>
+                <View style={styles.container}>
+                    <View style={styles.buttons}>
+                        <Text style={styles.text3}>My properties</Text>
+                    </View>
+                    <TouchableHighlight style={styles.createListButton} onPress={() => this.props.navigation.navigate('Create', {key:this.props.route.params.key})}>
+                            <Text style={styles.buttonTextStyle}>Create new</Text>
+                    </TouchableHighlight>
+                    {
+                        this.state.list.map((property, i) => {
+                            return (
+                                <View key={i}>
+                                    <Image
+                                        style={styles.logo}
+                                        source={require(`../assets/host${Math.ceil(Math.random()*7)}.jpg`)}
+                                    />
+                                    <View style={styles.box1}>
+                                        <Text style={styles.text1}>{property.title}</Text>
+                                        <Text style={styles.text2}>{property.type}</Text>
+                                        <Text style={styles.text2}>{property.address}</Text>
+                                        <Text style={styles.text2}>{property.rooms}</Text>
+                                        <Text style={styles.text2}>{property.price}</Text>
+                                        <Text style={styles.text2}>{property.area}</Text>
+                                        <View style={styles.buttons}>
+                                            <TouchableHighlight onPress={() => this.props.navigation.navigate('Edit', { property, key: this.props.route.params.key })}>
+                                                <Text style={styles.button}>Edit</Text>
+                                            </TouchableHighlight>
+                                            <TouchableHighlight onPress={() => this.handleDelete(property._id)}>
+                                                <Text style={styles.button}>Delete</Text>
+                                            </TouchableHighlight>
+                                        </View>
                                     </View>
                                 </View>
-                            </View>
-                        )
-                    })
-                }
-            </View>
+                            )
+                        })
+                    }
+                </View>
+            </ScrollView>
          );
     }
 }
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     },
 
     text3:{
-        color: 'Black',
+        color: '#000',
         textAlign:'center',
         fontWeight: 'bold'
 
@@ -156,6 +157,7 @@ const styles = StyleSheet.create({
     },
     box1:{
         borderColor: '#b0bec5',
+        width: 250,
         borderWidth: 5,
         borderRadius: 4,
         marginBottom: 5
