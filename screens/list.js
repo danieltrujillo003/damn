@@ -5,15 +5,24 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 class PropertiesList extends Component {
     constructor(props) {
         super(props);
-        this.state = { list: [] }
+        this.state = {
+            list: [],
+            sort: ''
+        }
     }
 
     componentDidMount = () => {
         this.getProperties()
     }
 
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.state.sort !== prevState.sort) {
+            this.getProperties()
+        }
+    }
+
     getProperties = () => {
-        fetch('http://localhost:3000/estates/get/all')
+        fetch(`http://localhost:3000/estates/get/all?sort=${this.state.sort}`)
         .then(response => response.json())
         .then(json => {
             this.setState({ list: json.res.data })
@@ -22,11 +31,23 @@ class PropertiesList extends Component {
         })
     }
 
+    toggleFilter = () => {
+        const { sort } = this.state
+        if (sort === 'asc') {
+            this.setState({ sort: 'desc' })
+        } else {
+            this.setState({ sort: 'asc' })
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <TouchableHighlight style={styles.createListButton} onPress={() => this.props.navigation.navigate('Login')}>
                     <Text style={styles.buttonTextStyle}>Properties</Text>
+                </TouchableHighlight>
+                <TouchableHighlight style={styles.createListButton} onPress={() => this.toggleFilter()}>
+                    <Text style={styles.buttonTextStyle}>Filter</Text>
                 </TouchableHighlight>
 
                 {
