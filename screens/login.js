@@ -49,18 +49,16 @@ class Login extends Component {
                     <TextInput style={styles.textInput} placeholder="Username" onChangeText={(text)=>this.setState({email:text})}/>
                     <TextInput style={styles.textInput} placeholder="Password" onChangeText={(text)=>this.setState({password:text})}/>
                 </View>
-                <View style={styles.main}>
                 <View style={styles.buttons}>
                     <TouchableHighlight style={''} onPress={this.onSubmit}>
                         <Text style={styles.text}>Find your place!</Text>
                     </TouchableHighlight>
                     <TouchableHighlight style={''} onPress={() => this.props.navigation.navigate('Register')}>
-                        <Text style={styles.text}>Sign in</Text>
+                        <Text style={styles.text}>Sign up</Text>
                     </TouchableHighlight>
                     <TouchableHighlight style={''} onPress={() => this.props.navigation.navigate('List')}>
                         <Text style={styles.text}>Enter as a guest</Text>
                     </TouchableHighlight>
-                    </View>
                 </View>
             </View>
         );
@@ -140,7 +138,7 @@ const styles = StyleSheet.create({
     buttonTextStyle: {
         color: '#F5FCFF'
     },
-    main: {}
+    buttons: {}
 });
 
 export default Login;

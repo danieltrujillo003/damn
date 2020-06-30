@@ -18,8 +18,8 @@ class Register extends Component {
     }
 
     login = (email, password) => {
-        fetch('http://localhost:3000/users/login', {
-            method: 'PUT',
+        fetch('http://localhost:3000/users/register', {
+            method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
@@ -32,7 +32,8 @@ class Register extends Component {
             .then(response => response.json())
             .then(json => {
                 this.setState({key:json.res.data.key})
-                this.props.navigation.navigate('User', {key:this.state.key})
+                this.props.navigation.navigate('Login')
+                Alert.alert('Account created, please log in')
             })
             .catch(error => {
                 Alert.alert('Invalid register')
@@ -42,24 +43,19 @@ class Register extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <Image style={styles.logo} source={require('../assets/logo.png')}/>
-                </View>
                 <View>
-                    <TextInput style={styles.textInput} placeholder="Name" onChangeText={(text)=>this.setState({email:text})}/>
-                    <TextInput style={styles.textInput} placeholder="Lastname" onChangeText={(text)=>this.setState({password:text})}/>
-                    <TextInput style={styles.textInput} placeholder="Username" onChangeText={(text)=>this.setState({email:text})}/>
+                    <TextInput style={styles.textInput} placeholder="Name" />
+                    <TextInput style={styles.textInput} placeholder="Lastname" />
+                    <TextInput style={styles.textInput} placeholder="Email" onChangeText={(text)=>this.setState({email:text})}/>
                     <TextInput style={styles.textInput} placeholder="Password" onChangeText={(text)=>this.setState({password:text})}/>
                 </View>
-                <View style={styles.main}>
                 <View style={styles.buttons}>
-                <TouchableHighlight style={''} onPress={() => this.props.navigation.navigate('User')}>
+                    <TouchableHighlight style={''} onPress={() => this.onSubmit()}>
                         <Text style={styles.text}>Register!</Text>
                     </TouchableHighlight>
                     <TouchableHighlight style={''} onPress={() => this.props.navigation.navigate('List')}>
                         <Text style={styles.text}>Enter without sign in</Text>
                     </TouchableHighlight>
-                    </View>
                 </View>
             </View>
         );
@@ -115,12 +111,6 @@ const styles = StyleSheet.create({
         color: 'teal',
         fontWeight: 'bold',
     },
-    buttons: {
-        width: '90%',
-        margin: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
       input: {
         height: 40,
         borderColor: 'black',
@@ -128,12 +118,6 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         marginBottom: 20
       },
-    buttons: {
-        width: '90%',
-        margin: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
       input: {
         height: 40,
         borderColor: 'black',
@@ -165,7 +149,7 @@ const styles = StyleSheet.create({
     buttonTextStyle: {
         color: '#F5FCFF'
     },
-    main: {}
+    buttons: {}
 });
 
 export default Register;
