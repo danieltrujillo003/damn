@@ -60,11 +60,8 @@ class PropertiesList extends Component {
                                 />
                                 <View style={styles.box1}>
                                     <Text style={styles.text1}>{property.title}</Text>
-                                    <Text style={styles.text2}>{property.type}</Text>
-                                    <Text style={styles.text2}>{property.address}</Text>
-                                    <Text style={styles.text2}>{property.rooms}</Text>
                                     <Text style={styles.text2}>{property.price}</Text>
-                                    <Text style={styles.text2}>{property.area}</Text>
+                                   
                                 </View>
                             </View>
                         )

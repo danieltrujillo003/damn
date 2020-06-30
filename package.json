@@ -25,5 +25,18 @@
     "babel-preset-expo": "~8.1.0",
     "@babel/core": "^7.8.6"
   },
-  "private": true
+  "private": true,
+  "name": "damn",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lutolita/damn.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lutolita/damn/issues"
+  },
+  "homepage": "https://github.com/lutolita/damn#readme",
+  "description": ""
 }
